@@ -21,7 +21,7 @@ def get_tasks():
             "category_id": task[7]
         })
     return jsonify(tasks_list) , 200
-
+#----------------------------------------------------------------------------
 @app.route('/api/tasks' , methods = ['POST'])
 def create_task():
         data = request.get_json()
@@ -32,15 +32,15 @@ def create_task():
         category = data.get('category', 'General')
         db.add_task(title , description , priority ,due_date , category )
         return jsonify({"message": "Task created successfully"}), 201
-        
+#----------------------------------------------------------------------------
 @app.route('/api/tasks/<int:task_id>' , methods = ['DELETE'])
 def delete_task(task_id):
     result = db.delete_task(task_id)
     if "not found" in result:
-        return jsonify({"message": result}), 404
+        return jsonify({"error": result}), 404
     
     return jsonify({"message": result}), 200
-
+#----------------------------------------------------------------------------
 @app.route('/api/tasks/<int:task_id>' , methods = ['GET'])
 def get_single_task(task_id):
     task = db.get_task_by_id(task_id)
@@ -55,8 +55,7 @@ def get_single_task(task_id):
             "created_at": task[6],
             "category_id": task[7]}
     return jsonify(task) , 200
-
-
+#----------------------------------------------------------------------------
 @app.route('/api/tasks/<int:task_id>' , methods = ['PUT'])
 def update_task(task_id):
     update = request.get_json()   
@@ -69,8 +68,7 @@ def update_task(task_id):
     if result:    
         return jsonify({"message":"Task updated successfully!"}) , 200
     return jsonify({"error":"Task cannot be updated"}) , 404
-
-
+#----------------------------------------------------------------------------
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,6 +1,7 @@
 import sqlite3
 from datetime import datetime
-DB_NAME = "tasks_advanced.db"
+import os
+DB_NAME = os.getenv("TEST_DB","tasks_advanced.db")
 
 def get_connection():
     """Create and return a database connection"""
